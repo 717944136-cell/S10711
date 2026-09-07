@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>概念学习：大模型的上下文（Context / 上下文窗口） | S10711 学习仓库</title>
+<style>
+  :root{
+    --bg:#f4f6f9; --card:#ffffff; --ink:#1f2937; --muted:#6b7280;
+    --accent:#7c3aed; --accent-soft:#f5f3ff; --border:#e5e7eb;
+    --ok:#059669; --warn:#b45309; --warn-soft:#fef3c7;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:-apple-system,"Segoe UI","Microsoft YaHei",sans-serif;line-height:1.75}
+  .wrap{max-width:880px;margin:0 auto;padding:32px 20px 64px}
+  .crumb{font-size:13px;color:var(--muted);margin-bottom:10px}
+  .crumb a{color:var(--accent);text-decoration:none}
+  header{background:linear-gradient(135deg,#6d28d9,#7c3aed);border-radius:16px;padding:28px 30px;color:#fff;box-shadow:0 6px 18px rgba(124,58,237,.25)}
+  header h1{font-size:28px;letter-spacing:.5px}
+  header .sub{opacity:.85;font-size:14px;margin-top:6px}
+  .meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+  .meta span{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.3);padding:2px 10px;border-radius:99px;font-size:12px}
+  .card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:22px 26px;margin-top:22px;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+  h2{font-size:19px;margin-bottom:12px;display:flex;align-items:center;gap:10px;color:#111827}
+  h2::before{content:"";width:5px;height:20px;border-radius:3px;background:var(--accent);display:inline-block}
+  h3{font-size:15.5px;margin:14px 0 6px;color:#111827}
+  p{margin:8px 0}
+  ul,ol{margin:6px 0 6px 24px}
+  li{margin:4px 0}
+  .lead{font-size:15.5px}
+  .analogy{background:var(--accent-soft);border-left:4px solid var(--accent);border-radius:8px;padding:12px 16px;margin:12px 0;font-size:14.5px}
+  .flow{background:#0b1220;border-radius:12px;padding:20px;margin:14px 0;overflow-x:auto;color:#e5e7eb;font-family:ui-monospace,Consolas,monospace;font-size:13.5px;line-height:1.9;white-space:nowrap}
+  .flow .hl{color:#c4b5fd}.flow .ok{color:#6ee7b7}.flow .dim{color:#9ca3af}.flow .warn{color:#fcd34d}
+  table{width:100%;border-collapse:collapse;margin:12px 0;font-size:14px}
+  th,td{border:1px solid var(--border);padding:9px 12px;text-align:left;vertical-align:top}
+  th{background:#f8fafc;color:#374151}
+  details{border:1px solid var(--border);border-radius:10px;padding:10px 14px;margin:8px 0;background:#fafbfc}
+  summary{cursor:pointer;font-weight:600;color:var(--accent)}
+  details .ans{margin-top:8px;border-top:1px dashed var(--border);padding-top:8px;color:#374151}
+  ol.src li{margin:8px 0;font-size:14px}
+  .url{word-break:break-all;color:var(--accent)}
+  .badge{display:inline-block;font-size:12px;padding:1px 9px;border-radius:99px;margin-left:6px;vertical-align:1px}
+  .b-ok{background:#d1fae5;color:var(--ok)}.b-warn{background:var(--warn-soft);color:var(--warn)}
+  .warnbox{background:var(--warn-soft);border:1px solid #fcd34d;border-radius:10px;padding:12px 16px;margin:10px 0;font-size:14.5px}
+  .check{background:#f8fafc;border:1px dashed var(--border);border-radius:10px;padding:14px 18px;margin-top:14px;font-size:13.5px;color:#374151}
+  .check b{color:#111827}
+  footer{margin-top:26px;font-size:12.5px;color:var(--muted);text-align:center}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="crumb"><a href="https://github.com/">S10711 学习仓库</a> / learning-materials / <b>llm-context.html</b>（由 concept-explainer Skill 生成）</div>
+
+  <header>
+    <h1>大模型的上下文（Context / 上下文窗口）</h1>
+    <div class="sub">LLM Context · Context Window · 大模型课程概念学习资料 ②</div>
+    <div class="meta"><span>🎯 入门→进阶</span><span>👤 编程初学者</span><span>📅 2026-09-07</span></div>
+  </header>
+
+  <!-- 1 学习目标 -->
+  <section class="card">
+    <h2>学习目标</h2>
+    <ul>
+      <li>能说清"上下文 / 上下文窗口"是什么，以及它和"训练数据"的本质区别。</li>
+      <li>知道哪些内容会占用上下文、窗口满了会发生什么、有哪些管理手段。</li>
+      <li>能解释"为什么理解上下文是理解 Agent 和 Skill 的关键一环"（三份资料之间的桥梁）。</li>
+    </ul>
+  </section>
+
+  <!-- 2 核心问题 -->
+  <section class="card">
+    <h2>核心问题</h2>
+    <ul>
+      <li>模型在回答问题时，到底"看得到"什么、"看不到"什么？</li>
+      <li>为什么聊了很久之后，AI 会"忘记"开头说过的话？</li>
+      <li>上下文窗口越大，模型就越聪明吗？</li>
+    </ul>
+  </section>
+
+  <!-- 3 个人解释 -->
+  <section class="card">
+    <h2>个人解释（我的理解）</h2>
+    <p class="lead">我的记忆锚点：<b>上下文是模型"本次任务的工作台"，而不是它"毕业前读过的书"。</b></p>
+    <p>大模型生成每个回答时，只能参考"此刻被放进输入里的全部内容"——系统提示词、历史对话、你贴的文档、工具返回的结果、甚至它自己刚说过的话。这一整块"摊在桌面上能被看见的资料"，就叫<b>上下文（context）</b>；它的容量上限就是<b>上下文窗口（context window）</b>，用 token 数量衡量。</p>
+    <div class="analogy">
+      🧭 <b>类比</b>：上下文窗口就像一张<b>课桌</b>，你一次只能在桌上摊开有限的书和笔记来写作业；放不下的只能收进书包（＝存档/长期记忆），或者干脆扔掉（＝被截断）。而训练数据相当于你<b>从小到大读过的书</b>，它们变成了你的知识，但写作业时你并不会把它们全摆在桌上——你能用的只是摆出来的那部分。
+    </div>
+    <ul>
+      <li>模型"记得"很多知识，那是训练阶段沉淀在参数里的（长期）；模型"此刻能用"的，只有上下文里的（工作记忆）。</li>
+      <li>自己输出的内容也会追加回上下文，成为下一轮的依据——所以多轮对话会越占越多。</li>
+      <li>Anthropic 官方把上下文称为模型的"working memory（工作记忆）"，这个词我记了很久。</li>
+    </ul>
+  </section>
+
+  <!-- 4 核心机制 -->
+  <section class="card">
+    <h2>核心机制 / 组成</h2>
+    <p>一次请求中，上下文窗口里装的是这些（它们都计 token）：</p>
+    <div class="flow">
+<span class="dim"># 上下文窗口 = 模型能看到的一切（示意）</span>
+┌─────────────────────────────────────────────┐
+│ <span class="hl">系统提示词 System Prompt</span>（角色/规则）              │
+│ <span class="hl">历史对话</span>（用户消息 + 模型回答逐轮累积）            │
+│ <span class="hl">工具/函数定义</span>（Agent 可用哪些工具）             │
+│ <span class="hl">工具返回结果</span>（搜索结果、代码输出、报错…）        │
+│ <span class="hl">用户当前问题</span>＋贴入的文档/图片                     │
+└─────────────────────────────────────────────┘
+       每次输出也会<span class="ok">追加</span>进来 → 下一轮接着累积
+       ……直到接近窗口上限 <span class="warn">N token</span>（例如 200k / 1M）
+    </div>
+    <h3>窗口满了怎么办（上下文管理三板斧）</h3>
+    <table>
+      <tr><th style="width:22%">策略</th><th>做法</th><th style="width:32%">例子</th></tr>
+      <tr><td>截断 / 丢弃（FIFO）</td><td>最早的内容先被挤掉，类似"先进先出"。</td><td>聊天界面里最早的几句被系统悄悄遗忘</td></tr>
+      <tr><td>压缩 / 总结（compaction）</td><td>把长历史浓缩成摘要，腾出空间（Anthropic 称为服务端压缩）。</td><td>长会话自动生成"前面的结论摘要"再继续</td></tr>
+      <tr><td>精选 / 检索（只放相关的）</td><td>不把整库塞进去，先检索出相关片段再放入上下文（RAG 思路）。</td><td>Agent 只把命中问题的几页文档放进窗口</td></tr>
+    </table>
+    <p><b>两个容易被忽略的真相</b>：</p>
+    <ul>
+      <li><b>上下文腐化（context rot）</b>：Anthropic 文档指出，token 越多，模型的精确度与信息召回反而下降——"塞得多"不等于"用得好"，精选内容和空间大小同样重要。</li>
+      <li><b>长上下文的"中间遗忘"</b>：研究（Lost in the Middle）发现模型对长文档<b>中间部分</b>的利用明显更差，重要信息尽量放开头/结尾，或拆成小段处理。</li>
+    </ul>
+  </section>
+
+  <!-- 5 具体应用场景 -->
+  <section class="card">
+    <h2>一个具体应用场景</h2>
+    <p><b>场景：让 AI 把本仓库三份概念资料（Agent / 上下文 / Skill）对比总结成一张关系表。</b></p>
+    <ol>
+      <li><b>直接全塞（反面示范）</b>：把三份很长的 HTML 全文一次性贴进对话。若总长接近窗口上限，模型可能出现：开头要求"用表格输出"被遵守，但中间某份资料的核心观点被忽略，或总结出现"张冠李戴"——这正是 context rot / 中间遗忘的表现。</li>
+      <li><b>正确做法（上下文管理）</b>：先告诉 AI 任务与输出格式（系统提示），再只粘贴每份资料的"个人解释"段落（精选），必要时分三次问再合并——每一步都让"工作台"保持干净、相关。</li>
+      <li><b>Agent 视角的延伸</b>：Agent 每调一次工具，返回结果都会进上下文；如果它把整个文件夹都读了，窗口很快被占满，就可能"忘"了最初的指令——所以 Agent 要会"挑着读、读完总结、再继续"。</li>
+    </ol>
+    <p>这说明：<b>会不会管理上下文，直接决定了大模型（以及基于它的 Agent）在真实任务里的表现。</b></p>
+  </section>
+
+  <!-- 6 易混淆 / 边界 -->
+  <section class="card">
+    <h2>容易混淆的问题 / 使用边界</h2>
+    <table>
+      <tr><th>容易混淆</th><th>关键区别（一句话）</th></tr>
+      <tr><td>上下文 vs 训练数据</td><td>训练数据＝模型参数里的长期知识（"读过书"）；上下文＝本次推理时可参考的输入（"桌上的资料"）。训练截止后的事模型并不知道，除非检索后放进上下文。</td></tr>
+      <tr><td>上下文窗口大小 vs 智能高低</td><td>窗口大只代表"能放更多"，不代表更聪明；越长越可能 context rot，且成本越高。小窗口＋好检索往往更实用。</td></tr>
+      <tr><td>上下文 vs "聊天记录"</td><td>聊天记录只是上下文的一部分；系统提示词、工具定义与返回、贴入文档都占上下文。</td></tr>
+      <tr><td>token 数 vs 字数</td><td>容量与计费都以 token 计；中英文每 token 对应的字数因分词器而异（大致 1 个汉字≈1 token 上下），不能拿"字数"直接换算。</td></tr>
+    </table>
+    <div class="warnbox">
+      ⚠️ <b>边界提醒</b>：
+      <ul style="margin-top:6px">
+        <li>超窗的请求会<b>报错或被截断</b>，重要内容可能悄悄丢失——关键资料别放"窗口最中间"。</li>
+        <li>放进上下文的内容会发送给 API 服务方：<b>不要把密码、密钥、隐私直接贴进对话</b>（这也是本仓库用 .gitignore 保护敏感文件的原因之一）。</li>
+        <li>上下文管理是工程问题：优先用检索/摘要/缓存（如 prompt caching）控制成本与质量，而不是盲目加长。</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 7 自测问题 -->
+  <section class="card">
+    <h2>自测问题</h2>
+    <details><summary>Q1：上下文窗口和训练数据是一回事吗？</summary>
+      <div class="ans">不是。训练数据＝模型预训练时学进参数的长期知识；上下文窗口＝生成回答这一刻可参考的输入（工作记忆），用完即弃、每次重新组织。</div></details>
+    <details><summary>Q2：为什么很长的对话里 AI 会"忘记"开头的内容？</summary>
+      <div class="ans">对话内容累积超过窗口上限后，最早的内容会被截断（FIFO 丢弃）或先被压缩成摘要（compaction），细节自然丢失。</div></details>
+    <details><summary>Q3：上下文越大越好吗？</summary>
+      <div class="ans">不是。越长精确度与召回可能下降（context rot），成本也更高；关键是把"相关的、精选的"内容放进去并放在合适位置。</div></details>
+    <details><summary>Q4：一个训练数据截止于去年的模型，"知道"今年发生的事吗？</summary>
+      <div class="ans">不知道（除非模型具备联网检索能力并把结果放进上下文）。参数知识有截止时间，新信息必须通过工具检索进入上下文。</div></details>
+    <details><summary>Q5：Agent 调用工具后，返回结果去了哪里？</summary>
+      <div class="ans">作为"工具返回结果"写进上下文窗口，成为模型下一轮推理的依据——这正是"环境反馈"机制在上下文层面的体现。</div></details>
+  </section>
+
+  <!-- 8 资料来源 -->
+  <section class="card">
+    <h2>资料来源（可核查）</h2>
+    <ol class="src">
+      <li>Anthropic 官方文档《Context windows》——上下文定义（working memory）、计入范围、compaction、context rot。<br><span class="url">https://docs.anthropic.com/en/docs/build-with-claude/context-windows</span><span class="badge b-ok">已联网核实</span></li>
+      <li>论文《Lost in the Middle: How Language Models Use Long Contexts》（arXiv:2307.03172）——长上下文的中间遗忘现象。<br><span class="url">https://arxiv.org/abs/2307.03172</span><span class="badge b-warn">请点开复核</span></li>
+      <li>Gemini 1.5 技术报告（arXiv:2403.05530）——百万级上下文窗口能力的代表性研究。<br><span class="url">https://arxiv.org/abs/2403.05530</span><span class="badge b-warn">请点开复核</span></li>
+      <li>Lilian Weng《LLM Powered Autonomous Agents》（Lil'Log）——把"短期记忆＝上下文"放入 Agent 框架的经典综述。<br><span class="url">https://lilianweng.github.io/posts/2023-06-23-agent/</span><span class="badge b-ok">已联网核实</span></li>
+    </ol>
+    <p style="font-size:13.5px;color:var(--muted)">引用用途：来源①支撑"定义/计数/管理策略/context rot"；②支撑"中间遗忘"；③作为"大窗口可行"的业界证据；④衔接本仓库另一份资料（agent.html）。</p>
+  </section>
+
+  <!-- 生成与人工核查记录 -->
+  <section class="card">
+    <h2>生成与人工核查记录</h2>
+    <div class="check">
+      <b>生成方式</b>：本文由项目级 Skill <code>concept-explainer</code> 按七步流程生成（.workbuddy/skills/concept-explainer/SKILL.md），生成时间 2026-09-07。<br><br>
+      <b>已完成的核查</b>：① "working memory / context rot / compaction"等说法与来源①对照无误；② 来源①已联网确认页面存在；③ 来源②③（arXiv 两篇）未逐一打开，已标注待复核；④ 自测题答案核对；⑤ 对"约 1 汉字≈1 token"等估算性表述采用模糊口径，避免误导。<br><br>
+      <b>建议人工做的事</b>：本人通读，重点检查"个人解释"是否符合自己的直觉；点开 ②③ 两篇论文确认标题与链接；如有不准确处直接修改本文件。
+    </div>
+  </section>
+
+  <footer>S10711 个人学习仓库 · learning-materials/llm-context.html · 由 concept-explainer Skill 生成 · 资料以官方来源为准，如有出入欢迎指正</footer>
+</div>
+</body>
+</html>
