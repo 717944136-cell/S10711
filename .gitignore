@@ -1,0 +1,42 @@
+# ============================================
+# S10711 个人学习仓库 - .gitignore
+# 用途：确保不把敏感文件、本地缓存提交到 GitHub
+# ============================================
+
+# ---------- 敏感信息：永远不要上传 ----------
+.env
+.env.*
+*.key
+*.pem
+*.p12
+*.pfx
+id_rsa
+id_rsa.pub
+*.secret
+secrets/
+credentials*
+
+# ---------- WorkBuddy 项目内会话数据（不要入库） ----------
+# 注意：.workbuddy/skills/ 目录需要入库（本作业的核心交付物），
+# 因此这里只排除 memory 等本地会话缓存，而不是整个 .workbuddy
+.workbuddy/memory/
+.workbuddy/*.log
+
+# ---------- 编辑器 / 系统文件 ----------
+.idea/
+*.iml
+.vscode/
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ---------- 编程语言常见产物（后续项目备用） ----------
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+node_modules/
+dist/
+build/
+*.log
+*.tmp
