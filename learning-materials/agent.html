@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>概念学习：AI Agent（智能体） | S10711 学习仓库</title>
+<style>
+  :root{
+    --bg:#f4f6f9; --card:#ffffff; --ink:#1f2937; --muted:#6b7280;
+    --accent:#2563eb; --accent-soft:#eff4ff; --border:#e5e7eb;
+    --ok:#059669; --warn:#b45309; --warn-soft:#fef3c7;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:-apple-system,"Segoe UI","Microsoft YaHei",sans-serif;line-height:1.75}
+  .wrap{max-width:880px;margin:0 auto;padding:32px 20px 64px}
+  .crumb{font-size:13px;color:var(--muted);margin-bottom:10px}
+  .crumb a{color:var(--accent);text-decoration:none}
+  header{background:linear-gradient(135deg,#1d4ed8,#2563eb);border-radius:16px;padding:28px 30px;color:#fff;box-shadow:0 6px 18px rgba(37,99,235,.25)}
+  header h1{font-size:28px;letter-spacing:.5px}
+  header .sub{opacity:.85;font-size:14px;margin-top:6px}
+  .meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+  .meta span{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.3);padding:2px 10px;border-radius:99px;font-size:12px}
+  .card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:22px 26px;margin-top:22px;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+  h2{font-size:19px;margin-bottom:12px;display:flex;align-items:center;gap:10px;color:#111827}
+  h2::before{content:"";width:5px;height:20px;border-radius:3px;background:var(--accent);display:inline-block}
+  h3{font-size:15.5px;margin:14px 0 6px;color:#111827}
+  p{margin:8px 0}
+  ul,ol{margin:6px 0 6px 24px}
+  li{margin:4px 0}
+  .lead{font-size:15.5px}
+  .analogy{background:var(--accent-soft);border-left:4px solid var(--accent);border-radius:8px;padding:12px 16px;margin:12px 0;font-size:14.5px}
+  .flow{background:#0b1220;border-radius:12px;padding:20px;margin:14px 0;overflow-x:auto;color:#e5e7eb;font-family:ui-monospace,Consolas,monospace;font-size:13.5px;line-height:1.9;white-space:nowrap}
+  .flow .hl{color:#93c5fd}.flow .ok{color:#6ee7b7}.flow .dim{color:#9ca3af}
+  table{width:100%;border-collapse:collapse;margin:12px 0;font-size:14px}
+  th,td{border:1px solid var(--border);padding:9px 12px;text-align:left;vertical-align:top}
+  th{background:#f8fafc;color:#374151}
+  details{border:1px solid var(--border);border-radius:10px;padding:10px 14px;margin:8px 0;background:#fafbfc}
+  summary{cursor:pointer;font-weight:600;color:var(--accent)}
+  details .ans{margin-top:8px;border-top:1px dashed var(--border);padding-top:8px;color:#374151}
+  ol.src li{margin:8px 0;font-size:14px}
+  .url{word-break:break-all;color:var(--accent)}
+  .badge{display:inline-block;font-size:12px;padding:1px 9px;border-radius:99px;margin-left:6px;vertical-align:1px}
+  .b-ok{background:#d1fae5;color:var(--ok)}.b-warn{background:var(--warn-soft);color:var(--warn)}
+  .warnbox{background:var(--warn-soft);border:1px solid #fcd34d;border-radius:10px;padding:12px 16px;margin:10px 0;font-size:14.5px}
+  .check{background:#f8fafc;border:1px dashed var(--border);border-radius:10px;padding:14px 18px;margin-top:14px;font-size:13.5px;color:#374151}
+  .check b{color:#111827}
+  footer{margin-top:26px;font-size:12.5px;color:var(--muted);text-align:center}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="crumb"><a href="https://github.com/">S10711 学习仓库</a> / learning-materials / <b>agent.html</b>（由 concept-explainer Skill 生成）</div>
+
+  <header>
+    <h1>Agent（AI 智能体）</h1>
+    <div class="sub">Agent / AI Agent · 大模型课程概念学习资料 ①</div>
+    <div class="meta"><span>🎯 入门→进阶</span><span>👤 编程初学者</span><span>📅 2026-09-07</span></div>
+  </header>
+
+  <!-- 1 学习目标 -->
+  <section class="card">
+    <h2>学习目标</h2>
+    <ul>
+      <li>能用 1～2 句话说清"什么是 Agent"，并讲明白它与聊天机器人的差别。</li>
+      <li>能说出 Agent 的核心组成（规划 / 记忆 / 工具）与"感知–决策–行动–反馈"循环。</li>
+      <li>能举出一个真实应用场景，并说出它的使用边界与风险。</li>
+    </ul>
+  </section>
+
+  <!-- 2 核心问题 -->
+  <section class="card">
+    <h2>核心问题</h2>
+    <ul>
+      <li>同样是 AI，为什么聊天机器人不算 Agent？Agent 到底"多做了什么"？</li>
+      <li>Agent 靠什么把一个大任务一步步做完？做错了会怎样？</li>
+      <li>Agent 可以完全自主吗？边界在哪里？</li>
+    </ul>
+  </section>
+
+  <!-- 3 个人解释 -->
+  <section class="card">
+    <h2>个人解释（我的理解）</h2>
+    <p class="lead">我的记忆锚点是一句话：<b>Agent = 大模型（大脑）＋规划＋记忆＋工具（手脚），在"环境反馈"的循环里自主完成任务。</b></p>
+    <p>如果把只会聊天的 ChatGPT 比作"一个很聪明、但坐在原地只接话的顾问"，那么 Agent 就是"被派出去独立办事的实习生"：他拿到一个目标后自己拆步骤、自己查资料、自己动手，做错了根据结果重试，干完了才回来向你汇报。聊天是"一问一答"，Agent 是"领任务→干活→汇报"。</p>
+    <div class="analogy">
+      🧭 <b>类比</b>：搜索引擎＝你自己查资料、自己做判断；Agent＝你把整件事交给一个会用电脑的助手，他自己查、自己干、自己核对，遇到不确定再回来问你。差别的关键是：<b>它会不会"动手做事并观察结果"</b>。
+    </div>
+    <p>两个业界定义帮我校准了理解：</p>
+    <ul>
+      <li><b>OpenAI</b>：Agent 是有 <i>instructions</i>（该做什么）、<i>guardrails</i>（不该做什么）和 <i>tools</i>（能做什么）的 AI 系统，代表用户去采取行动；如果只是生成文本回答、不连接任何系统采取行动，那更接近聊天机器人。</li>
+      <li><b>Anthropic</b>：Agent 本质上常常"只是 LLM 基于环境反馈在一个循环里调用工具"，实现并不神秘；它的价值主要来自任务选型与工具设计。</li>
+    </ul>
+  </section>
+
+  <!-- 4 核心机制 / 组成 -->
+  <section class="card">
+    <h2>核心机制 / 组成</h2>
+    <p>下面是 Agent 工作的一般循环（参考 Anthropic《Building Effective Agents》与 Lilian Weng 的经典综述整理）：</p>
+    <div class="flow">
+<span class="dim"># Agent 主循环（伪流程）</span>
+<span class="hl">用户目标 / 指令</span> ──▶ <span class="hl">规划 Planning</span>
+                              （拆解子任务 · 自我反思 · 决定下一步）
+                                        │
+                                        ▼
+                              <span class="hl">记忆 Memory</span>：短期＝上下文/对话历史
+                                        │      长期＝向量库/笔记/文件
+                                        ▼
+                              <span class="hl">工具 Tools</span>：搜索 · 代码执行 · API · 读写文件
+                                        │
+                                        ▼
+                              执行动作 → 得到<span class="ok">环境反馈</span>（工具结果/报错）
+                                        │
+                    反馈回到上下文，判断：完成了吗？
+                    ├── 没有 → 回到<span class="hl">规划</span>，继续循环（可重试、可修正）
+                    └── 完成 → 整理结果，<span class="ok">交付 / 向人汇报</span>（必要时等待审批）
+    </div>
+    <h3>组成拆解</h3>
+    <table>
+      <tr><th style="width:16%">组成</th><th style="width:44%">作用</th><th>例子</th></tr>
+      <tr><td>规划 Planning</td><td>把复杂任务拆成可执行步骤；执行中自我反思、调整计划（如 ReAct 的"推理+行动交替"模式）。</td><td>"先读全部笔记，再提炼要点，最后写周报"</td></tr>
+      <tr><td>记忆 Memory</td><td>短期记忆＝当前对话上下文；长期记忆＝可检索的笔记/知识库，让 Agent 跨会话"记得"。</td><td>上下文窗口、向量数据库</td></tr>
+      <tr><td>工具 Tools</td><td>让 Agent 能"动手"：查资料、执行代码、调 API、改文件，把能力从"说话"扩展到"做事"。</td><td>网络搜索、代码解释器、文件读写</td></tr>
+    </table>
+    <p>关键点：<b>环境反馈是循环的燃料</b>——工具的真实返回（成功/报错）让模型基于事实判断进展、及时纠错，而不是凭想象一路狂奔（否则错误会不断累积）。Anthropic 还强调：Agent 可以在检查点或遇到阻碍时暂停，把控制权交回给人。</p>
+  </section>
+
+  <!-- 5 具体应用场景 -->
+  <section class="card">
+    <h2>一个具体应用场景</h2>
+    <p><b>场景：让 Agent 帮我整理一周的学习笔记。</b>我把一个装满课堂笔记的文件夹交给它，说："汇总成一份 Markdown 周报，标出我还没搞懂的概念。"</p>
+    <ol>
+      <li><b>规划</b>：Agent 自动列出步骤——遍历文件夹 → 读每份笔记 → 提炼本周主题 → 对"没搞懂的概念"标记并查资料 → 生成周报。</li>
+      <li><b>工具＋反馈</b>：它调用"读文件"工具逐份读取；某份笔记是旧编码读出来是乱码，它根据报错换一种方式重读（纠错）；遇到它也不确定的概念，它联网搜索确认后再写进周报。</li>
+      <li><b>交付</b>：循环结束，输出 `weekly-report.md`，并回来告诉我"有三处概念我标注为存疑，建议你确认"。我审阅后决定是否采纳——这就是"人在回路"。</li>
+    </ol>
+    <p>这不是想象：Anthropic 披露的真实案例包括——用 Agent 做客服（自动查订单、按规则处理退款）和写代码（对着测试结果反复改代码解决 SWE-bench 任务），都是"对话＋行动＋清晰成功标准"的典型场景。</p>
+  </section>
+
+  <!-- 6 易混淆 / 边界 -->
+  <section class="card">
+    <h2>容易混淆的问题 / 使用边界</h2>
+    <table>
+      <tr><th>容易混淆</th><th>关键区别（一句话）</th></tr>
+      <tr><td>Agent vs 聊天机器人（chatbot）</td><td>聊天机器人只生成文本回答；Agent 能调用工具、采取行动、根据环境反馈推进任务。判据：它有没有"做事"的循环。</td></tr>
+      <tr><td>Agent vs 工作流（Workflow）</td><td>Anthropic 的区分：Workflow＝由<u>代码预先定义</u>路径去编排 LLM（确定性）；Agent＝由<u>LLM 自己决定</u>路径与步数（动态）。</td></tr>
+      <tr><td>Agent vs "接了 API 的聊天框"</td><td>只是背后多了个接口、但没有自主规划与多步行动循环，严格说仍是增强型助手，不是 Agent。</td></tr>
+    </table>
+    <div class="warnbox">
+      ⚠️ <b>边界提醒</b>：Agent 自主 ≠ 无限信任。
+      <ul style="margin-top:6px">
+        <li><b>成本与错误累积</b>：自主意味着更多步数、更高成本；一步错可能步步错（compounding errors）。Anthropic 建议先在沙箱环境充分测试。</li>
+        <li><b>需要护栏</b>：高影响动作（删数据、转账、发消息）应设 guardrails 与人工审批，保持"人在回路"。</li>
+        <li><b>不是所有任务都该用 Agent</b>：路径可预测的固定任务用普通脚本/工作流更便宜、更可靠（Anthropic 原则：先简单方案，复杂到确实需要再升级）。</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 7 自测问题 -->
+  <section class="card">
+    <h2>自测问题</h2>
+    <details><summary>Q1：某应用内嵌了 ChatGPT 帮你写回复，但不调用任何工具、不做多步执行。它算 Agent 吗？</summary>
+      <div class="ans">不算。它没有工具、没有"行动→反馈"的自主循环，更接近"增强型 LLM 助手/聊天机器人"。</div></details>
+    <details><summary>Q2：按经典综述，Agent 系统的三大组成是什么？</summary>
+      <div class="ans">规划（Planning）、记忆（Memory）、工具使用（Tool Use），由 LLM 作为核心控制器（controller）协调。</div></details>
+    <details><summary>Q3：Workflow 与 Agent 的关键区别是什么？</summary>
+      <div class="ans">控制流归谁决定：Workflow 由代码预定义路径（确定），Agent 由 LLM 在执行中动态决定路径与步数（不确定）。</div></details>
+    <details><summary>Q4：为什么工具返回的"环境反馈"对 Agent 很重要？</summary>
+      <div class="ans">让模型基于真实结果判断进展与纠错（ground truth），避免脱离现实凭空继续，从而抑制错误累积。</div></details>
+    <details><summary>Q5（开放）：举一个"不该用 Agent"的例子。</summary>
+      <div class="ans">示例：每天凌晨把日志文件改名归档——路径完全固定、可预测，用普通脚本即可，用 Agent 反而更贵、更不可控。</div></details>
+  </section>
+
+  <!-- 8 资料来源 -->
+  <section class="card">
+    <h2>资料来源（可核查）</h2>
+    <ol class="src">
+      <li>Anthropic 官方工程指南《Building Effective Agents》——Workflow vs Agent 的定义、"Agent＝LLM＋工具＋环境反馈循环"。<br><span class="url">https://www.anthropic.com/research/building-effective-agents</span><span class="badge b-ok">已联网核实</span></li>
+      <li>Lilian Weng（翁荔）《LLM Powered Autonomous Agents》（Lil'Log，2023-06）——Agent＝LLM controller＋规划＋记忆＋工具 的经典综述。<br><span class="url">https://lilianweng.github.io/posts/2023-06-23-agent/</span><span class="badge b-ok">已联网核实</span></li>
+      <li>OpenAI 学习轨道《Learn how to build agents》——定义（instructions / guardrails / tools）与实现组件。<br><span class="url">https://developers.openai.com/tracks/building-agents/</span><span class="badge b-ok">已联网核实</span></li>
+      <li>ReAct 论文（arXiv:2210.03629）——"推理＋行动"交替的经典 Agent 模式。<br><span class="url">https://arxiv.org/abs/2210.03629</span><span class="badge b-warn">请点开复核</span></li>
+      <li>Anthropic《Our framework for developing safe and trustworthy agents》——自主性与"人在回路/护栏"边界。<br><span class="url">https://www.anthropic.com/news/our-framework-for-developing-safe-and-trustworthy-agents</span><span class="badge b-ok">已联网核实</span></li>
+    </ol>
+    <p style="font-size:13.5px;color:var(--muted)">引用用途：来源①②③⑤支撑"定义与组成"；来源④支撑"规划中的 ReAct 模式"；应用案例来自①⑤中的客户实践。</p>
+  </section>
+
+  <!-- 生成与人工核查记录 -->
+  <section class="card">
+    <h2>生成与人工核查记录</h2>
+    <div class="check">
+      <b>生成方式</b>：本文由仓库内项目级 Skill <code>concept-explainer</code>（.workbuddy/skills/concept-explainer/SKILL.md）按"澄清概念→自问自答→收集素材→生成→交叉核对→自检→登记"七步流程生成，生成时间 2026-09-07。<br><br>
+      <b>已完成的核查</b>：① 关键术语与两份权威来源的定义交叉对照无冲突；② 来源 ①②③⑤ 已联网确认页面存在；③ 来源④（arXiv）未打开验证，已标注待复核；④ 自测题答案逐题核对。<br><br>
+      <b>建议人工做的事</b>：本人通读一遍，把"个人解释"与"类比"改成自己顺口的说法；点开来源④确认链接有效；如发现表述错误请直接修改本文件。
+    </div>
+  </section>
+
+  <footer>S10711 个人学习仓库 · learning-materials/agent.html · 由 concept-explainer Skill 生成 · 资料以官方来源为准，如有出入欢迎指正</footer>
+</div>
+</body>
+</html>
