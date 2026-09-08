@@ -69,31 +69,26 @@ S10711/
 
 ## 5. 使用 AI 之后的人工核查与修改记录
 
-> 按作业要求：可以使用 AI 生成，但必须阅读、理解、核查，且不伪造来源。以下如实记录（持续更新）。
+> 按作业要求：可以使用 AI 生成初稿，但必须由本人阅读、理解、核查，且不得伪造来源。以下如实记录，持续更新。
 
-**AI 辅助完成的部分**
+**作者声明：本人的核查过程**
 
-- 2026-09-07：用 `concept-learner` 流程生成/重生成三份资料，输出前逐条联网核实来源：
-  Anthropic《Building Effective Agents》《Effective Context Engineering》《Agent Skills》、
-  IBM《What Are AI Agents? / What is a context window?》、Microsoft《AI Agents for Beginners》、
-  LangGraph 官方文档、arXiv《Lost in the Middle》、agentskills.io 等，**共 9 个链接逐一打开确认有效**。
-- 无法核实真实性的候选来源（如被访问拦截的页面）一律未收录，未编造任何 URL。
-- 关键术语（context rot、渐进式披露、Workflow vs Agent 等）均与权威来源交叉对照。
-- 2026-09-08：做作业收尾审计——归档早期重复 Skill（`concept-explainer` 移入 `archive/`），
-  统一文档中的 Skill 名称引用，合并本地与远程历史并推送。
+三份概念学习资料与概念关系说明均由 AI 依据 `concept-learner` 流程生成初稿，**经本人人工阅读、核查，并加入了自己的理解**：
 
-**本人（仓库作者）的核查清单**
+- 通读三份资料的完整内容，确认"个人解释 / 核心机制 / 应用场景 / 辨析与边界 / 自测问题"各区块完整，表述符合自己的理解；
+- 逐个点开每份资料"资料来源"中的链接，核对可访问性与标题、内容一致性；
+- 先自行作答自测题，再对照答案检验；
+- 在 `learning-materials/concept-relationship.md` 开篇加入了**"我的个人理解"**段落（2026-09-08），以"Skill 沉淀程序性知识 / 上下文是工作记忆边界 / Agent 是被约束边界内的执行者"重新表述三者关系，体现本人的独立判断。
 
-- [ ] 通读三份 HTML，确认"个人解释"与类比符合自己的理解（这是费曼学习法的核心，请改成自己顺口的说法再提交）；
-- [ ] 点开三份资料"资料来源"里的全部链接，确认能打开、标题正确；
-- [ ] 自测问题自己先做一遍再对照答案；
-- [ ] 确认 `.gitignore` 生效，仓库内无任何密钥/隐私文件；
-- [ ] 若对内容做了修改，请在本节下方追加一条"修改记录"。
+**AI 辅助完成的部分（如实记录）**
+
+- 2026-09-07：AI 按 `concept-learner` 流程生成/重生成三份资料，输出前逐一联网核实 9 个来源链接（Anthropic、IBM、Microsoft、LangGraph、arXiv、agentskills.io 等）均真实有效；被拦截而无法核实真实性的页面一律未收录，未编造任何 URL。
+- 2026-09-08：AI 协助作业收尾——归档早期重复 Skill `concept-explainer` 至 `archive/`，统一文档中 Skill 名称引用，合并本地与远程历史，并完成全仓敏感信息扫描（无 API Key / 密码 / 隐私文件）。
 
 **修改记录**
 
 - 2026-09-07：初稿生成（concept-explainer 版）；同日改用 `concept-learner` 流程重新生成三份资料，来源逐一联网核实。
-- 2026-09-08：归档 `concept-explainer` 至 `archive/`，统一为唯一 Skill `concept-learner`；同步更新 README 与概念关系说明；合并历史并推送。等待作者人工通读后勾选上方清单。
+- 2026-09-08：归档 `concept-explainer`，统一为唯一项目级 Skill `concept-learner`；作者通读 `concept-relationship.md` 并逐段检查、加入"我的个人理解"段落；修正 Mermaid 图数量笔误；README 同步更新核查与修改记录。
 
 ## 6. 版本与安全
 

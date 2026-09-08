@@ -14,12 +14,15 @@ id_rsa
 id_rsa.pub
 *.secret
 secrets/
+api_keys/
 credentials*
 
 # ---------- WorkBuddy 项目内会话数据（不要入库） ----------
 # 注意：.workbuddy/skills/ 目录需要入库（本作业的核心交付物），
 # 因此这里只排除 memory 等本地会话缓存，而不是整个 .workbuddy
 .workbuddy/memory/
+.workbuddy/cache/
+.workbuddy/logs/
 .workbuddy/*.log
 
 # ---------- 编辑器 / 系统文件 ----------
@@ -33,6 +36,7 @@ desktop.ini
 # ---------- 编程语言常见产物（后续项目备用） ----------
 __pycache__/
 *.py[cod]
+*.pyc
 .venv/
 venv/
 node_modules/
