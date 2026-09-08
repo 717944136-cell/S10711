@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>概念学习：Skill（AI 技能 / Agent Skills） | S10711 学习仓库</title>
+<title>概念学习：Skill（Agent 技能） | S10711 学习仓库</title>
 <style>
   :root{
     --bg:#f4f6f9; --card:#ffffff; --ink:#1f2937; --muted:#6b7280;
-    --accent:#0d9488; --accent-soft:#f0fdfa; --border:#e5e7eb;
+    --accent:#2563eb; --accent-soft:#eff4ff; --border:#e5e7eb;
     --ok:#059669; --warn:#b45309; --warn-soft:#fef3c7;
   }
   *{box-sizing:border-box;margin:0;padding:0}
@@ -15,7 +15,7 @@
   .wrap{max-width:880px;margin:0 auto;padding:32px 20px 64px}
   .crumb{font-size:13px;color:var(--muted);margin-bottom:10px}
   .crumb a{color:var(--accent);text-decoration:none}
-  header{background:linear-gradient(135deg,#0f766e,#0d9488);border-radius:16px;padding:28px 30px;color:#fff;box-shadow:0 6px 18px rgba(13,148,136,.25)}
+  header{background:linear-gradient(135deg,#1d4ed8,#2563eb);border-radius:16px;padding:28px 30px;color:#fff;box-shadow:0 6px 18px rgba(37,99,235,.25)}
   header h1{font-size:28px;letter-spacing:.5px}
   header .sub{opacity:.85;font-size:14px;margin-top:6px}
   .meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
@@ -30,9 +30,7 @@
   .lead{font-size:15.5px}
   .analogy{background:var(--accent-soft);border-left:4px solid var(--accent);border-radius:8px;padding:12px 16px;margin:12px 0;font-size:14.5px}
   .flow{background:#0b1220;border-radius:12px;padding:20px;margin:14px 0;overflow-x:auto;color:#e5e7eb;font-family:ui-monospace,Consolas,monospace;font-size:13.5px;line-height:1.9;white-space:nowrap}
-  .flow .hl{color:#5eead4}.flow .ok{color:#6ee7b7}.flow .dim{color:#9ca3af}
-  .code{background:#0b1220;color:#e5e7eb;border-radius:10px;padding:14px 18px;font-family:ui-monospace,Consolas,monospace;font-size:13px;line-height:1.8;overflow-x:auto;margin:10px 0}
-  .code .c{color:#6ee7b7}.code .k{color:#fca5a5}
+  .flow .hl{color:#93c5fd}.flow .ok{color:#6ee7b7}.flow .dim{color:#9ca3af}
   table{width:100%;border-collapse:collapse;margin:12px 0;font-size:14px}
   th,td{border:1px solid var(--border);padding:9px 12px;text-align:left;vertical-align:top}
   th{background:#f8fafc;color:#374151}
@@ -42,7 +40,7 @@
   ol.src li{margin:8px 0;font-size:14px}
   .url{word-break:break-all;color:var(--accent)}
   .badge{display:inline-block;font-size:12px;padding:1px 9px;border-radius:99px;margin-left:6px;vertical-align:1px}
-  .b-ok{background:#d1fae5;color:var(--ok)}.b-warn{background:var(--warn-soft);color:var(--warn)}
+  .b-ok{background:#d1fae5;color:var(--ok)}
   .warnbox{background:var(--warn-soft);border:1px solid #fcd34d;border-radius:10px;padding:12px 16px;margin:10px 0;font-size:14.5px}
   .check{background:#f8fafc;border:1px dashed var(--border);border-radius:10px;padding:14px 18px;margin-top:14px;font-size:13.5px;color:#374151}
   .check b{color:#111827}
@@ -52,155 +50,118 @@
 <body>
 <div class="wrap">
 
-  <div class="crumb"><a href="https://github.com/">S10711 学习仓库</a> / learning-materials / <b>skill.html</b>（由 concept-explainer Skill 生成）</div>
+  <div class="crumb"><a href="https://github.com/">S10711 学习仓库</a> / learning-materials / <b>skill.html</b>（由 concept-learner Skill 生成，覆盖旧版）</div>
 
   <header>
-    <h1>Skill（AI 技能 / Agent Skills）</h1>
-    <div class="sub">Skill · Agent Skills · 大模型课程概念学习资料 ③</div>
-    <div class="meta"><span>🎯 入门→进阶</span><span>👤 编程初学者</span><span>📅 2026-09-07</span></div>
+    <h1>Skill（Agent 技能）</h1>
+    <div class="sub">Agent Skill · SKILL.md · concept-learner 概念学习资料</div>
+    <div class="meta"><span>🎯 入门→进阶</span><span>👤 编程初学者</span><span>📅 2026-09-07</span><span>✅ 来源已联网核实</span></div>
   </header>
 
-  <!-- 1 学习目标 -->
+  <!-- 1 个人解释 -->
   <section class="card">
-    <h2>学习目标</h2>
-    <ul>
-      <li>能用一句话说清 Skill 是什么，并解释"为什么值得做成文件而不是每次口头交代"。</li>
-      <li>能讲清"渐进式披露"三层机制，以及它如何与上下文窗口配合。</li>
-      <li>能区分 Skill 与 Prompt / Tool / MCP，并照着写一个最简 SKILL.md。</li>
-    </ul>
-  </section>
-
-  <!-- 2 核心问题 -->
-  <section class="card">
-    <h2>核心问题</h2>
-    <ul>
-      <li>既然可以直接在对话框里告诉 AI 怎么做，为什么还要专门做一个 Skill？</li>
-      <li>AI 怎么知道"什么时候该用哪个 Skill"？装很多 Skill 会不会把上下文撑爆？</li>
-      <li>Skill、Prompt、Tool、MCP 到底有什么不同？</li>
-    </ul>
-  </section>
-
-  <!-- 3 个人解释 -->
-  <section class="card">
-    <h2>个人解释（我的理解）</h2>
-    <p class="lead">我的记忆锚点：<b>Skill 是把"怎么做某类任务"的专家经验，打包成 AI 需要时能自己翻开看的工作手册。</b></p>
-    <p>一个 Skill 本质就是一个<b>文件夹</b>，里面至少有一个 <code>SKILL.md</code> 文件：文件顶部是 YAML 元数据（<code>name</code>＋<code>description</code>），告诉 AI"这个技能叫什么、什么时候该用我"；正文则写清具体怎么做。AI 平时只"扫一眼目录"，当任务匹配时，才把正文读进来照着执行——官方说法是"像给新员工准备 onboarding 材料一样，把专业知识打包给 AI"。</p>
+    <h2>概念的个人解释</h2>
+    <p class="lead">我的一句话理解：<b>Skill = 给 Agent 的"岗位手册"——一个装着 SKILL.md（外加可选脚本和资料）的文件夹，平时只挂在墙上，Agent 发现当前任务对得上时才取下来照着做。</b></p>
+    <p>大模型本身是"什么都会一点、什么都不精"的通才。Skill 的思路不是去改造模型，而是把某类任务的<b>程序性知识</b>（怎么做、按什么流程、注意什么坑）写成文档打包，让模型在干活前先读手册。Anthropic 的类比很贴切：<b>为 Agent 写一个 Skill，就像给新员工准备一份入职指南</b>——指南本身不增加员工智商，但能让他把特定工作做得更专业、更稳定。</p>
+    <p>妙处在于它的格式简单得惊人：<b>一个文件夹 + 一个带元数据的 Markdown 文件</b>，就是全部。正因为简单，它后来被发布成了开放标准（agentskills.io），被几十个主流 Agent 产品采纳——写一次，到处能用。</p>
     <div class="analogy">
-      🧭 <b>类比</b>：Prompt 是"你顺口交代的一句话"；Skill 是"写好的岗位说明书/菜谱"。交代的话说完就忘，下次还得重讲；菜谱存在抽屉里（＝文件夹），每次要做这道菜（＝任务匹配）就拿出来照着做，还能不断改进、跟别人共享。
+      🧭 <b>类比</b>：Skill 像图书馆里的<b>操作手册卡片</b>。图书管理员（Agent）脑子里记着每张卡片的索引卡（名称+一句话描述）；平时只看索引，等你说"帮我填个 PDF 表单"，他才抽出对应的手册完整读一遍，照着步骤干，需要时再翻手册附录里的表格和工具。手册管够、桌子不乱——这正好接上了上一个概念：<b>Skill 是对抗上下文有限的手段</b>。
     </div>
-    <ul>
-      <li>对<b>我</b>最直观的例子：本仓库的 <code>concept-explainer</code> 就是一个 Skill——我把"学一个新概念"的完整方法写进 SKILL.md，于是同一套流程可以反复用于 Agent、上下文、Skill 以及以后任何新概念。</li>
-      <li>Anthropic 于 2025-10 正式发布 Agent Skills，2025-12 又将其发布为开放标准：同一格式可跨产品、跨平台复用。</li>
-    </ul>
   </section>
 
-  <!-- 4 核心机制 -->
+  <!-- 2 核心机制 -->
   <section class="card">
-    <h2>核心机制 / 组成</h2>
-    <p>Skill 高效的关键是<b>渐进式披露（progressive disclosure）</b>——信息分三层，用到哪层才加载哪层：</p>
-    <table>
-      <tr><th style="width:22%">层级</th><th style="width:44%">内容</th><th>何时进入上下文</th></tr>
-      <tr><td>① 元数据</td><td>YAML 头部的 <code>name</code>＋<code>description</code>（每个约百来个 token）</td><td>启动时常驻（用于"该不该用我"的匹配）</td></tr>
-      <tr><td>② 正文指令</td><td>SKILL.md 正文：工作流、最佳实践、注意事项</td><td>任务命中 description 后读取</td></tr>
-      <tr><td>③ 附带资源</td><td>脚本、模板、参考文档（可另放子文件）</td><td>按需再读，用不到就不占窗口</td></tr>
-    </table>
-    <p>一次触发流程示意：</p>
+    <h2>核心机制或组成</h2>
+    <h3>① 结构：一个文件夹，一个入口</h3>
     <div class="flow">
-<span class="dim"># Skill 触发过程（以本仓库 concept-explainer 为例）</span>
-用户请求："<span class="hl">用 concept-explainer 学习 MCP</span>"
-   │
-   ▼ AI 把请求与所有已装 Skill 的 description 比对（只花元数据的 token）
-   │  命中：concept-explainer —— "概念学习资料生成器…"
-   ▼ AI 读取 .workbuddy/skills/concept-explainer/<span class="ok">SKILL.md</span> 正文
-   │  获得七步生成流程、章节模板、资料来源与自检要求
-   ▼ 按流程执行 → 生成 learning-materials/<span class="ok">mcp.html</span>（必要时再读③子资源）
-   完成，并在 README / 关系说明中登记
+<span class="dim"># Agent Skills 开放标准（agentskills.io）的目录结构</span>
+my-skill/
+├── <span class="hl">SKILL.md</span>        <span class="ok"># 必需：YAML 元数据 + 任务指令</span>
+├── scripts/        <span class="dim"># 可选：可执行脚本（确定性步骤交给代码）</span>
+├── references/     <span class="dim"># 可选：参考文档（按需加载）</span>
+└── assets/         <span class="dim"># 可选：模板、资源文件</span>
     </div>
-    <p>一个最简 SKILL.md 长这样（YAML 必填 <code>name</code> 和 <code>description</code>）：</p>
-    <div class="code"><span class="k">---</span>
-<span class="c">name:</span> hello-demo
-<span class="c">description:</span> 当用户说"你好/打招呼"时使用。教 AI 用固定的方式友好回应并自我介绍。
-<span class="k">---</span>
-
-# 执行步骤
-1. 用一句问候回应；
-2. 简单介绍自己能做什么；
-3. 询问用户今天想做什么。</div>
-    <p><b>为什么这与上下文强相关</b>：因为只有元数据常驻，即使安装几十个 Skill，平时占用的窗口也很小；一旦触发才加载正文。这正是 Skill 能"装很多而不拖垮 AI"的原因，也呼应了 llm-context.html 里"上下文要精选、别塞满"的原则。</p>
+    <p>SKILL.md 的元数据最少只要两个字段：<code>name</code>（标识）和 <code>description</code>（说明这个 Skill 做什么、<b>什么时候该用它</b>）——后者尤其关键，Agent 全靠它判断何时触发这个 Skill。</p>
+    <h3>② 渐进式披露（Progressive Disclosure）——设计的灵魂</h3>
+    <table>
+      <tr><th style="width:18%">层级</th><th style="width:44%">加载什么</th><th>何时加载</th></tr>
+      <tr><td>第一级</td><td>name + description 元数据</td><td>启动时全部预载进系统提示（很小的开销）</td></tr>
+      <tr><td>第二级</td><td>SKILL.md 的完整正文</td><td>Agent 判断与当前任务相关时才读</td></tr>
+      <tr><td>第三级</td><td>捆绑的附加文件（references、脚本等）</td><td>Agent 按需自主发现和加载</td></tr>
+    </table>
+    <p>这直接回应了"上下文有限"的问题：Agent 用文件系统<strong>按需取用</strong>而不是全量读入，所以一个 Skill 能捆绑的资料量实际上<b>没有上限</b>。Anthropic 的 PDF Skill 就是范例——表单填写指令被分离到 <code>forms.md</code>，核心手册保持精简，只在填表时才读那个文件。</p>
+    <h3>③ 代码与模型的分工</h3>
+    <p>Skill 可以捆绑脚本。原则是：<b>确定性的步骤交给代码</b>（如提取 PDF 字段、排序、格式转换），模型负责判断和编排。代码执行不占上下文、结果可靠可重复——这是"token 生成"做不到的。</p>
+    <h3>④ 生态：从厂商特性到开放标准</h3>
+    <p>该格式由 Anthropic 发起、2025 年底作为开放标准发布；agentskills.io 列出的采纳方已包括 Claude Code、Codex、Gemini CLI、GitHub Copilot、Cursor 等数十个客户端。这意味着 Skill 成了一种<b>可移植的程序性知识格式</b>，类似"Agent 界的 Markdown"。</p>
   </section>
 
-  <!-- 5 具体应用场景 -->
+  <!-- 3 应用场景 -->
   <section class="card">
-    <h2>一个具体应用场景</h2>
-    <p><b>场景：把"我的概念学习法"做成 Skill，反复使用（也就是本作业正在做的事）。</b></p>
+    <h2>具体应用场景</h2>
+    <p><b>场景：就发生在你这个仓库里——<code>.workbuddy/skills/concept-learner/</code> 本身就是一个活例子。</b></p>
+    <p>你说"帮我学习『Skill』这个概念"，背后发生的事是：</p>
     <ol>
-      <li><b>沉淀</b>：我把学习一个概念的方法——先列学习目标与核心问题，再写个人解释、机制图解、应用场景、辨析、自测、真实来源——写成 <code>.workbuddy/skills/concept-explainer/SKILL.md</code>。</li>
-      <li><b>复用</b>：在 WorkBuddy 中打开本仓库，对 AI 说"用 concept-explainer 学习 Agent"，AI 自动匹配并读取该 Skill，按里面的流程产出 <code>agent.html</code>；同样的请求再来两次，得到 <code>llm-context.html</code> 和 <code>skill.html</code>——同一套方法，零重复讲解。</li>
-      <li><b>迭代与共享</b>：Skill 跟着仓库走（git 版本管理），以后觉得流程要改进，改一处 SKILL.md 即可；将来学 RAG、MCP 等新概念继续调用，甚至可以把仓库公开分享给同学。</li>
+      <li><b>发现（第一级）</b>：Agent 启动时就已把 <code>concept-learner</code> 的 name 和 description 读进上下文——"输入概念名，生成结构化 HTML 学习资料"。此时手册正文还没读。</li>
+      <li><b>激活（第二级）</b>：任务与描述匹配，Agent 完整读取 SKILL.md 正文，按其中写好的流程走：澄清定义 → 梳理机制 → 构思场景 → 识别易混点 → 检索可核查来源 → 按固定输出结构生成。</li>
+      <li><b>执行（第三级）</b>：按"来源要求"逐条联网核实 URL，不编造链接；生成后按"自检要求"逐项检查 HTML 完整性。</li>
     </ol>
-    <p>其它真实例子：Anthropic 官方为 Claude 预置了处理 Excel / PPT / PDF 的 Skill；企业把"品牌规范""发布流程"做成 Skill，让 AI 干活时自动遵守。</p>
+    <p>对比一下没有 Skill 的情况：每次都要口头交代流程和格式要求，换个会话就忘、质量不稳定。Skill 把这套流程<b>固化成了可重复、可版本控制、可分享的资产</b>——这正是"手册"的价值。业界同类的真实例子还有 Anthropic 官方仓库里的 docx/pdf/pptx/xlsx 文档技能（驱动 Claude 的文档能力）等。</p>
   </section>
 
-  <!-- 6 易混淆 / 边界 -->
+  <!-- 4 易混淆 / 边界 -->
   <section class="card">
     <h2>容易混淆的问题 / 使用边界</h2>
     <table>
-      <tr><th>容易混淆</th><th>关键区别（一句话）</th></tr>
-      <tr><td>Skill vs 普通 Prompt</td><td>Prompt 是一次性、对话级的指令，每次重发；Skill 是文件化、跨会话、可版本管理、可带脚本资源的"可复用工作手册"，按需自动触发。</td></tr>
-      <tr><td>Skill vs Tool（工具）</td><td>Tool 是 AI 能调用的确定性"手脚"（搜索、算数、调 API）；Skill 是教 AI"怎么把活干专业"的流程知识（工作手册）。Skill 常常指导 AI 何时、如何用 Tools。</td></tr>
-      <tr><td>Skill vs MCP</td><td>MCP 是"把外部系统/工具接进来"的标准化协议；Skill 是"知识与流程"的打包格式。一个解决"怎么连"，一个解决"怎么干"，可互补使用。</td></tr>
-      <tr><td>Skill vs 记忆/数据库</td><td>记忆存"事实"（记得什么）；Skill 存"程序性知识"（知道怎么做）。大量事实资料应放 Skill 的③级资源里按需读取，而不是塞进正文。</td></tr>
+      <tr><th>辨析</th><th>关键区别（一句话）</th></tr>
+      <tr><td>① Skill vs MCP / 工具</td><td>MCP 解决"连接什么"（把外部服务、数据接进来）；Skill 解决"怎么做"（把工作流程、领域知识写成手册）。Anthropic 明确将二者定位为互补：Skill 可以教会 Agent 编排 MCP 工具的复杂流程。</td></tr>
+      <tr><td>② Skill vs 系统提示 / 长提示词</td><td>提示词常驻上下文、篇篇付费；Skill 平时只占一两行描述，正文按需加载——这正是渐进式披露的意义。把所有流程塞进系统提示，等于把整面墙的手册都摊在书桌上。</td></tr>
+      <tr><td>③ Skill vs 记忆</td><td>记忆存"事实与偏好"（这个用户是谁、项目约定是什么）；Skill 存"程序性知识"（这类任务按什么步骤做）。一个回答"是什么"，一个回答"怎么办"。</td></tr>
+      <tr><td>④ Skill vs 插件 / 扩展</td><td>传统插件是代码级扩展，需按宿主的接口开发；Skill 只是文档+可选脚本，写 Markdown 就能创建，且因开放标准可跨产品迁移。</td></tr>
     </table>
     <div class="warnbox">
-      ⚠️ <b>边界与注意事项</b>：
+      ⚠️ <b>边界与风险</b>
       <ul style="margin-top:6px">
-        <li><b>description 写不好＝技能永远不被触发</b>：它要同时说清"做什么"和"什么时候用"。</li>
-        <li><b>触发后仍占上下文</b>：正文要精简（官方建议正文控制在 5k token 内），复杂内容拆到③级资源。</li>
-        <li><b>代码安全</b>：Skill 可以带可执行脚本，能力越强风险越大——只安装/运行可信来源的 Skill。</li>
-        <li><b>Skill ≠ 万能</b>：它只是"把已知做法固化"，解决不了模型本身能力不足或任务目标不清的问题。</li>
+        <li><b>安全是第一边界</b>：恶意 Skill 可以指示 Agent 窃取数据或执行非预期操作，捆绑的脚本和资源也可能藏东西。只从可信来源安装；不可信来源必须先审计（检查依赖、捆绑资源、要求联网的指令）。</li>
+        <li><b>description 决定生死</b>：Agent 靠描述判断要不要用这个 Skill。描述含糊或过长（有 1024 字符上限），Skill 就可能永远不被触发，或在不该用时被触发。</li>
+        <li><b>Skill 不是免检代码</b>：官方也强调示例仅供演示，用前要在自己的环境里充分测试——手册写得再好，也得验证它真的管用。</li>
       </ul>
     </div>
   </section>
 
-  <!-- 7 自测问题 -->
+  <!-- 5 自测 -->
   <section class="card">
     <h2>自测问题</h2>
-    <details><summary>Q1：一个 Skill 的最简形态是什么？SKILL.md 顶部必须写哪两个字段？</summary>
-      <div class="ans">一个目录＋一个 SKILL.md；顶部 YAML 必填 <code>name</code> 和 <code>description</code>（description 要说明做什么＋何时用）。</div></details>
-    <details><summary>Q2：为什么安装很多 Skill 不会显著占用上下文窗口？</summary>
-      <div class="ans">渐进式披露：平时只有元数据（name/description）常驻，约占百 token/个；正文和资源在任务命中后才加载。</div></details>
-    <details><summary>Q3：用一句话区分 Skill 与 Tool。</summary>
-      <div class="ans">Tool 是可执行的"手脚"（做什么），Skill 是指导性的"工作手册"（怎么做得专业），两者常配合使用。</div></details>
-    <details><summary>Q4：如果某 Skill 的 description 写得含糊，会发生什么？</summary>
-      <div class="ans">AI 无法在触发匹配时判断何时该用，Skill 形同虚设——description 直接决定技能是否会被发现。</div></details>
-    <details><summary>Q5（开放）：Skill 里可以放可执行脚本吗？有什么风险？</summary>
-      <div class="ans">可以，官方设计就支持用脚本做确定性操作（如排序、算表）。风险是执行了不可信代码可能危害系统，因此应只使用可信来源的 Skill。</div></details>
+    <details><summary>Q1：一个 Skill 捆绑了 200 页参考文档，会不会把 Agent 的上下文撑爆？为什么？</summary>
+      <div class="ans">不会。渐进式披露保证启动时只加载 name+description；200 页文档只有在任务真正需要时才被按需读取（第三级）。所以 Skill 可捆绑的信息量实际上没有上限。</div></details>
+    <details><summary>Q2：写好一个 Skill 后发现 Agent 从不使用它，最可能的问题出在哪里？</summary>
+      <div class="ans">最可能是 frontmatter 的 description 写得不好——它是 Agent 判断"何时触发"的唯一依据。描述要么没说清适用场景（该触发时不触发），要么太宽泛（不该触发时误触发）。按 Anthropic 的建议，应站在 Agent 的视角重写描述，并观察它实际如何使用。</div></details>
+    <details><summary>Q3：公司要教 Agent 按自家品牌规范排版文档，并让 Agent 在任何支持 Skills 的产品里都能用。该用系统提示、MCP 还是 Skill？为什么？</summary>
+      <div class="ans">用 Skill。理由：① 流程性知识适合写成手册（渐进披露、省上下文）；② Skill 是开放标准（agentskills.io），一次编写可跨 Claude Code、Codex、Copilot 等数十个客户端复用；③ 系统提示常驻耗 token 且绑定单一产品，MCP 只解决工具连接不承载工作流知识。</div></details>
   </section>
 
-  <!-- 8 资料来源 -->
+  <!-- 6 资料来源 -->
   <section class="card">
-    <h2>资料来源（可核查）</h2>
+    <h2>可核查的资料来源</h2>
+    <p style="font-size:13.5px;color:var(--muted)">以下 3 个链接均已于生成当日（2026-09-07）联网打开核实内容真实有效。</p>
     <ol class="src">
-      <li>Anthropic 官方发布《Introducing Agent Skills》——Skill 定义、文件夹+SKILL.md、开放标准。<br><span class="url">https://www.anthropic.com/news/skills</span><span class="badge b-ok">已联网核实</span></li>
-      <li>Anthropic 工程博客《Equipping agents for the real world with Agent Skills》——Skill 解剖、渐进式披露、与上下文窗口的关系。<br><span class="url">https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills</span><span class="badge b-ok">已联网核实</span></li>
-      <li>Agent Skills 官方文档《Agent Skills · Overview》（Level 1/2/3 分级与加载时机）。<br><span class="url">https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview</span><span class="badge b-ok">已联网核实</span></li>
-      <li>MCP 官网（用于辨析"工具连接协议"这一层）。<br><span class="url">https://modelcontextprotocol.io/</span><span class="badge b-warn">请点开复核</span></li>
-      <li>实践例证：本仓库自建 Skill——<code>.workbuddy/skills/concept-explainer/SKILL.md</code>（随仓库可查，无需外链）。</li>
+      <li>Anthropic《Equipping agents for the real world with Agent Skills》——Skill 的定义与"入职指南"类比、渐进式披露三级加载、代码分工、开发最佳实践与安全边界。<br><span class="url">https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills</span><span class="badge b-ok">已联网核实</span></li>
+      <li>Agent Skills 开放标准官网 agentskills.io——标准格式定义（文件夹 + SKILL.md + 可选目录）、渐进式披露机制、采纳该标准的数十个 Agent 产品清单。<br><span class="url">https://agentskills.io</span><span class="badge b-ok">已联网核实</span></li>
+      <li>GitHub 官方仓库 anthropics/skills——真实 Skill 实例（含驱动 Claude 文档能力的 docx/pdf/pptx/xlsx）、技能模板与规范。<br><span class="url">https://github.com/anthropics/skills</span><span class="badge b-ok">已联网核实</span></li>
     </ol>
-    <p style="font-size:13.5px;color:var(--muted)">引用用途：①②③支撑定义、机制与渐进式披露；④用于概念辨析；⑤为本人实践，说明"Skill 落地于本仓库"。正文中的"约百 token/元数据""正文 5k token 内"等数量来自②③的表述。</p>
   </section>
 
-  <!-- 生成与人工核查记录 -->
+  <!-- 7 自检记录 -->
   <section class="card">
-    <h2>生成与人工核查记录</h2>
+    <h2>生成与自检记录</h2>
     <div class="check">
-      <b>生成方式</b>：本文由项目级 Skill <code>concept-explainer</code> 按七步流程生成（.workbuddy/skills/concept-explainer/SKILL.md），生成时间 2026-09-07。有趣的是：本文内容本身就是"用 Skill 解释 Skill"。<br><br>
-      <b>已完成的核查</b>：① "文件夹+SKILL.md、YAML 必填 name/description、渐进式披露、开放标准"等关键事实与来源①②③逐条对照一致；② 来源①②③已联网确认页面存在；③ 来源④（MCP）未打开，已标注待复核；④ 最简 SKILL.md 示例已与官方结构比对（不含错误字段）；⑤ 自测题答案核对。<br><br>
-      <b>建议人工做的事</b>：本人对照本仓库真实的 concept-explainer/SKILL.md 再读一遍正文，检验"本文描述的结构"与"仓库实际文件"是否一致；点开④确认链接；如有出入直接修改。
+      <b>生成方式</b>：由仓库内项目级 Skill <code>concept-learner</code>（.workbuddy/skills/concept-learner/SKILL.md）生成，生成时间 2026-09-07；本文件覆盖了同日早些时候由 concept-explainer 生成的旧版（旧版已提交 git，可随时回溯）。<br><br>
+      <b>自检结果</b>：① HTML 结构完整、可直接在浏览器打开；② 六个区块内容齐全、无空泛套话；③ 3 个来源链接均联网核实有效（满足 ≥3），未收录无法核实的候选来源；④ 解释为个人化表述与类比（岗位手册/图书馆卡片），非照搬定义；⑤ 辨析共 4 条，Skill 与 MCP 的互补关系、1024 字符描述上限等细节均来自已核实来源，无事实性错误。<br><br>
+      <b>建议人工复核</b>：通读"个人解释"改成自己顺口的话；点开 3 个来源确认；发现错误直接改本文件。
     </div>
   </section>
 
-  <footer>S10711 个人学习仓库 · learning-materials/skill.html · 由 concept-explainer Skill 生成 · 资料以官方来源为准，如有出入欢迎指正</footer>
+  <footer>S10711 个人学习仓库 · learning-materials/skill.html · 由 concept-learner Skill 生成 · 资料以官方来源为准</footer>
 </div>
 </body>
 </html>

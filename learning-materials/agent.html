@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>概念学习：AI Agent（智能体） | S10711 学习仓库</title>
+<title>概念学习：Agent（智能体） | S10711 学习仓库</title>
 <style>
   :root{
     --bg:#f4f6f9; --card:#ffffff; --ink:#1f2937; --muted:#6b7280;
@@ -40,7 +40,7 @@
   ol.src li{margin:8px 0;font-size:14px}
   .url{word-break:break-all;color:var(--accent)}
   .badge{display:inline-block;font-size:12px;padding:1px 9px;border-radius:99px;margin-left:6px;vertical-align:1px}
-  .b-ok{background:#d1fae5;color:var(--ok)}.b-warn{background:var(--warn-soft);color:var(--warn)}
+  .b-ok{background:#d1fae5;color:var(--ok)}
   .warnbox{background:var(--warn-soft);border:1px solid #fcd34d;border-radius:10px;padding:12px 16px;margin:10px 0;font-size:14.5px}
   .check{background:#f8fafc;border:1px dashed var(--border);border-radius:10px;padding:14px 18px;margin-top:14px;font-size:13.5px;color:#374151}
   .check b{color:#111827}
@@ -50,151 +50,120 @@
 <body>
 <div class="wrap">
 
-  <div class="crumb"><a href="https://github.com/">S10711 学习仓库</a> / learning-materials / <b>agent.html</b>（由 concept-explainer Skill 生成）</div>
+  <div class="crumb"><a href="https://github.com/">S10711 学习仓库</a> / learning-materials / <b>agent.html</b>（由 concept-learner Skill 生成，覆盖旧版）</div>
 
   <header>
-    <h1>Agent（AI 智能体）</h1>
-    <div class="sub">Agent / AI Agent · 大模型课程概念学习资料 ①</div>
-    <div class="meta"><span>🎯 入门→进阶</span><span>👤 编程初学者</span><span>📅 2026-09-07</span></div>
+    <h1>Agent（智能体）</h1>
+    <div class="sub">Agent / AI Agent · concept-learner 概念学习资料</div>
+    <div class="meta"><span>🎯 入门→进阶</span><span>👤 编程初学者</span><span>📅 2026-09-07</span><span>✅ 来源已联网核实</span></div>
   </header>
 
-  <!-- 1 学习目标 -->
+  <!-- 1 个人解释 -->
   <section class="card">
-    <h2>学习目标</h2>
-    <ul>
-      <li>能用 1～2 句话说清"什么是 Agent"，并讲明白它与聊天机器人的差别。</li>
-      <li>能说出 Agent 的核心组成（规划 / 记忆 / 工具）与"感知–决策–行动–反馈"循环。</li>
-      <li>能举出一个真实应用场景，并说出它的使用边界与风险。</li>
-    </ul>
-  </section>
-
-  <!-- 2 核心问题 -->
-  <section class="card">
-    <h2>核心问题</h2>
-    <ul>
-      <li>同样是 AI，为什么聊天机器人不算 Agent？Agent 到底"多做了什么"？</li>
-      <li>Agent 靠什么把一个大任务一步步做完？做错了会怎样？</li>
-      <li>Agent 可以完全自主吗？边界在哪里？</li>
-    </ul>
-  </section>
-
-  <!-- 3 个人解释 -->
-  <section class="card">
-    <h2>个人解释（我的理解）</h2>
-    <p class="lead">我的记忆锚点是一句话：<b>Agent = 大模型（大脑）＋规划＋记忆＋工具（手脚），在"环境反馈"的循环里自主完成任务。</b></p>
-    <p>如果把只会聊天的 ChatGPT 比作"一个很聪明、但坐在原地只接话的顾问"，那么 Agent 就是"被派出去独立办事的实习生"：他拿到一个目标后自己拆步骤、自己查资料、自己动手，做错了根据结果重试，干完了才回来向你汇报。聊天是"一问一答"，Agent 是"领任务→干活→汇报"。</p>
+    <h2>概念的个人解释</h2>
+    <p class="lead">我的一句话理解：<b>Agent = 把大模型当"大脑"，给它"手脚"（工具）和"目标"，让它在一个"行动→看结果→再决定"的循环里自主把事情做完的系统。</b></p>
+    <p>把普通聊天模型想成一个"坐在座位上只出主意的顾问"：你问一句，它答一句，事情还是得你自己动手。而 Agent 是你把目标交出去——它自己把任务拆开，自己选工具去查、去算、去改文件，每做一步都看一眼真实反馈（报错了就换路子），直到达标才回来汇报。IBM 的定义和这个直觉一致：AI Agent 是"利用可用工具自主设计工作流并执行任务的系统"。</p>
+    <p>Anthropic 的说法更"祛魅"：Agent 往往"只是 LLM 在循环里根据环境反馈调用工具"——听起来简单，但正因为控制流是模型自己走出来的，才和"代码写死路径"的工作流有了本质区别。</p>
     <div class="analogy">
-      🧭 <b>类比</b>：搜索引擎＝你自己查资料、自己做判断；Agent＝你把整件事交给一个会用电脑的助手，他自己查、自己干、自己核对，遇到不确定再回来问你。差别的关键是：<b>它会不会"动手做事并观察结果"</b>。
+      🧭 <b>类比</b>：搜索引擎时代你是"自己找菜谱自己做菜"；聊天模型是"打电话问大厨第一步放什么"；Agent 是"把厨房和食材交给一个学过大厨手艺的助手，他边尝边调，做好端给你"。关键差别就一条：<b>它自己动手，并对结果负责地观察和修正</b>。
     </div>
-    <p>两个业界定义帮我校准了理解：</p>
-    <ul>
-      <li><b>OpenAI</b>：Agent 是有 <i>instructions</i>（该做什么）、<i>guardrails</i>（不该做什么）和 <i>tools</i>（能做什么）的 AI 系统，代表用户去采取行动；如果只是生成文本回答、不连接任何系统采取行动，那更接近聊天机器人。</li>
-      <li><b>Anthropic</b>：Agent 本质上常常"只是 LLM 基于环境反馈在一个循环里调用工具"，实现并不神秘；它的价值主要来自任务选型与工具设计。</li>
-    </ul>
   </section>
 
-  <!-- 4 核心机制 / 组成 -->
+  <!-- 2 核心机制 -->
   <section class="card">
-    <h2>核心机制 / 组成</h2>
-    <p>下面是 Agent 工作的一般循环（参考 Anthropic《Building Effective Agents》与 Lilian Weng 的经典综述整理）：</p>
+    <h2>核心机制或组成</h2>
+    <p>Agent 的运行核心是一个循环：<b>理解目标 → 规划 → 调工具行动 → 观察反馈 → 决定继续或结束</b>。</p>
     <div class="flow">
 <span class="dim"># Agent 主循环（伪流程）</span>
-<span class="hl">用户目标 / 指令</span> ──▶ <span class="hl">规划 Planning</span>
-                              （拆解子任务 · 自我反思 · 决定下一步）
-                                        │
-                                        ▼
-                              <span class="hl">记忆 Memory</span>：短期＝上下文/对话历史
-                                        │      长期＝向量库/笔记/文件
-                                        ▼
-                              <span class="hl">工具 Tools</span>：搜索 · 代码执行 · API · 读写文件
-                                        │
-                                        ▼
-                              执行动作 → 得到<span class="ok">环境反馈</span>（工具结果/报错）
-                                        │
-                    反馈回到上下文，判断：完成了吗？
-                    ├── 没有 → 回到<span class="hl">规划</span>，继续循环（可重试、可修正）
-                    └── 完成 → 整理结果，<span class="ok">交付 / 向人汇报</span>（必要时等待审批）
+<span class="hl">目标/指令</span> ──▶ <span class="hl">规划</span>（拆子任务，决定下一步）
+                     │
+                     ▼
+              <span class="hl">调用工具</span>：搜索 · 读写文件 · 执行代码 · 调 API
+                     │
+                     ▼
+              得到<span class="ok">环境反馈</span>（工具结果 / 报错）
+                     │
+       ├── 未完成 → 反馈写回上下文，回到<span class="hl">规划</span>（可重试、可换策略）
+       └── 完成 → 整理结果，<span class="ok">交付 / 等人审批</span>
     </div>
-    <h3>组成拆解</h3>
+    <h3>三个关键部件</h3>
     <table>
-      <tr><th style="width:16%">组成</th><th style="width:44%">作用</th><th>例子</th></tr>
-      <tr><td>规划 Planning</td><td>把复杂任务拆成可执行步骤；执行中自我反思、调整计划（如 ReAct 的"推理+行动交替"模式）。</td><td>"先读全部笔记，再提炼要点，最后写周报"</td></tr>
-      <tr><td>记忆 Memory</td><td>短期记忆＝当前对话上下文；长期记忆＝可检索的笔记/知识库，让 Agent 跨会话"记得"。</td><td>上下文窗口、向量数据库</td></tr>
-      <tr><td>工具 Tools</td><td>让 Agent 能"动手"：查资料、执行代码、调 API、改文件，把能力从"说话"扩展到"做事"。</td><td>网络搜索、代码解释器、文件读写</td></tr>
+      <tr><th style="width:18%">部件</th><th style="width:46%">作用</th><th>典型例子</th></tr>
+      <tr><td>规划 Planning</td><td>把大目标拆成可执行的小步骤，执行中根据反馈自我修正（如 ReAct 的"边推理边行动"）。</td><td>"先读文件夹里所有笔记，再提炼主题，最后生成周报"</td></tr>
+      <tr><td>记忆 Memory</td><td>短期＝当前上下文里的对话与中间结果；长期＝跨会话可检索的笔记/知识库。</td><td>上下文窗口、向量数据库、本地笔记文件</td></tr>
+      <tr><td>工具 Tools</td><td>把"会说"变成"会做"：查资料、跑代码、改文件、调外部服务。</td><td>网络搜索、代码解释器、文件读写、MCP 工具</td></tr>
     </table>
-    <p>关键点：<b>环境反馈是循环的燃料</b>——工具的真实返回（成功/报错）让模型基于事实判断进展、及时纠错，而不是凭想象一路狂奔（否则错误会不断累积）。Anthropic 还强调：Agent 可以在检查点或遇到阻碍时暂停，把控制权交回给人。</p>
+    <p>其中最容易被低估的是<b>环境反馈</b>：工具返回的真实结果（成功、报错、数字）是 Agent 判断"进展对不对"的唯一事实依据。没有真实反馈，模型只能凭想象一路往下编，错误会累积。</p>
+    <p>工程侧的对应物：LangGraph 这类框架把 Agent 建模成<b>可编排的图</b>——把确定性的手写步骤和 LLM 驱动的自主步骤放在同一张图里，并配上持久化、人工介入（human-in-the-loop）等长时运行所需的基础设施。也就是说，真实生产系统往往是"半自主"的：关键节点由代码兜底，灵活节点交给模型。</p>
   </section>
 
-  <!-- 5 具体应用场景 -->
+  <!-- 3 应用场景 -->
   <section class="card">
-    <h2>一个具体应用场景</h2>
-    <p><b>场景：让 Agent 帮我整理一周的学习笔记。</b>我把一个装满课堂笔记的文件夹交给它，说："汇总成一份 Markdown 周报，标出我还没搞懂的概念。"</p>
+    <h2>具体应用场景</h2>
+    <p><b>场景：让 Agent 整理我这个月的学习笔记并生成月报。</b></p>
+    <p>我对它说："把 learning-materials 里这个月的笔记汇总成一份 Markdown 月报，标出我还没搞懂的概念。"接下来它自己走完了全程：</p>
     <ol>
-      <li><b>规划</b>：Agent 自动列出步骤——遍历文件夹 → 读每份笔记 → 提炼本周主题 → 对"没搞懂的概念"标记并查资料 → 生成周报。</li>
-      <li><b>工具＋反馈</b>：它调用"读文件"工具逐份读取；某份笔记是旧编码读出来是乱码，它根据报错换一种方式重读（纠错）；遇到它也不确定的概念，它联网搜索确认后再写进周报。</li>
-      <li><b>交付</b>：循环结束，输出 `weekly-report.md`，并回来告诉我"有三处概念我标注为存疑，建议你确认"。我审阅后决定是否采纳——这就是"人在回路"。</li>
+      <li><b>规划</b>：列出步骤——枚举文件 → 逐份阅读 → 提炼主题 → 对存疑概念联网查证 → 写月报。</li>
+      <li><b>行动与纠错</b>：调用文件读取工具逐份处理；某份文件编码异常读出乱码，它看到报错后换解码方式重读；某个概念它也不确定，就先搜索官方文档确认再落笔。</li>
+      <li><b>交付与汇报</b>：输出 <code>monthly-report.md</code>，并明确告诉我"三处表述标注为存疑，建议人工复核"。我审阅后再决定采纳与否——这就是"人在回路"。</li>
     </ol>
-    <p>这不是想象：Anthropic 披露的真实案例包括——用 Agent 做客服（自动查订单、按规则处理退款）和写代码（对着测试结果反复改代码解决 SWE-bench 任务），都是"对话＋行动＋清晰成功标准"的典型场景。</p>
+    <p>这不是脑补出来的场景。Anthropic 公布的两个落地案例与此同构：<b>编程 Agent</b> 对着测试结果反复修改代码直到通过（SWE-bench），以及<b>客服 Agent</b> 自动查订单、按政策处理退款——共同特征是"目标明确 + 有工具 + 反馈可判断成败"。</p>
   </section>
 
-  <!-- 6 易混淆 / 边界 -->
+  <!-- 4 易混淆 / 边界 -->
   <section class="card">
     <h2>容易混淆的问题 / 使用边界</h2>
     <table>
-      <tr><th>容易混淆</th><th>关键区别（一句话）</th></tr>
-      <tr><td>Agent vs 聊天机器人（chatbot）</td><td>聊天机器人只生成文本回答；Agent 能调用工具、采取行动、根据环境反馈推进任务。判据：它有没有"做事"的循环。</td></tr>
-      <tr><td>Agent vs 工作流（Workflow）</td><td>Anthropic 的区分：Workflow＝由<u>代码预先定义</u>路径去编排 LLM（确定性）；Agent＝由<u>LLM 自己决定</u>路径与步数（动态）。</td></tr>
-      <tr><td>Agent vs "接了 API 的聊天框"</td><td>只是背后多了个接口、但没有自主规划与多步行动循环，严格说仍是增强型助手，不是 Agent。</td></tr>
+      <tr><th>辨析</th><th>关键区别（一句话）</th></tr>
+      <tr><td>① Agent vs 聊天机器人</td><td>聊天机器人只生成文本回答；Agent 会调用工具、采取行动，并根据环境反馈推进多步任务。判据：有没有"行动→观察"的循环。</td></tr>
+      <tr><td>② Agent vs 工作流（Workflow）</td><td>看控制流归谁：Workflow 由代码预先编排 LLM 的调用路径（确定性）；Agent 由 LLM 自己决定路径与步数（动态、不可完全预知）。</td></tr>
+      <tr><td>③ Agent vs "接了工具的单轮助手"</td><td>只在一个回合里调一次工具（如联网回答一个问题）只是"增强型 LLM"；要有多步自主规划与循环执行，才叫 Agent。</td></tr>
+      <tr><td>④ Agent vs 多 Agent 系统</td><td>多个 Agent 协作不等于能力线性叠加——多 Agent 会引入依赖链和新的失败模式；单 Agent + 好工具往往更简单可靠。</td></tr>
     </table>
     <div class="warnbox">
-      ⚠️ <b>边界提醒</b>：Agent 自主 ≠ 无限信任。
+      ⚠️ <b>边界：自主 ≠ 免检</b>
       <ul style="margin-top:6px">
-        <li><b>成本与错误累积</b>：自主意味着更多步数、更高成本；一步错可能步步错（compounding errors）。Anthropic 建议先在沙箱环境充分测试。</li>
-        <li><b>需要护栏</b>：高影响动作（删数据、转账、发消息）应设 guardrails 与人工审批，保持"人在回路"。</li>
-        <li><b>不是所有任务都该用 Agent</b>：路径可预测的固定任务用普通脚本/工作流更便宜、更可靠（Anthropic 原则：先简单方案，复杂到确实需要再升级）。</li>
+        <li><b>错误会累积</b>：自主步数越多，一次小错被放大成大错的风险越高。Anthropic 建议先在沙箱中充分测试，并给出明确的成功判据。</li>
+        <li><b>高影响动作要设护栏</b>：删数据、花钱、对外发消息等操作应有权限限制与人工审批；IBM 的最佳实践同样强调活动日志与人类监督。</li>
+        <li><b>不是所有任务都配得上 Agent</b>：路径完全可预测的固定任务，用普通脚本/工作流更便宜、更可靠。Anthropic 的原则是"先最简单方案，确有必要再升级"。</li>
       </ul>
     </div>
   </section>
 
-  <!-- 7 自测问题 -->
+  <!-- 5 自测 -->
   <section class="card">
     <h2>自测问题</h2>
-    <details><summary>Q1：某应用内嵌了 ChatGPT 帮你写回复，但不调用任何工具、不做多步执行。它算 Agent 吗？</summary>
-      <div class="ans">不算。它没有工具、没有"行动→反馈"的自主循环，更接近"增强型 LLM 助手/聊天机器人"。</div></details>
-    <details><summary>Q2：按经典综述，Agent 系统的三大组成是什么？</summary>
-      <div class="ans">规划（Planning）、记忆（Memory）、工具使用（Tool Use），由 LLM 作为核心控制器（controller）协调。</div></details>
-    <details><summary>Q3：Workflow 与 Agent 的关键区别是什么？</summary>
-      <div class="ans">控制流归谁决定：Workflow 由代码预定义路径（确定），Agent 由 LLM 在执行中动态决定路径与步数（不确定）。</div></details>
-    <details><summary>Q4：为什么工具返回的"环境反馈"对 Agent 很重要？</summary>
-      <div class="ans">让模型基于真实结果判断进展与纠错（ground truth），避免脱离现实凭空继续，从而抑制错误累积。</div></details>
-    <details><summary>Q5（开放）：举一个"不该用 Agent"的例子。</summary>
-      <div class="ans">示例：每天凌晨把日志文件改名归档——路径完全固定、可预测，用普通脚本即可，用 Agent 反而更贵、更不可控。</div></details>
+    <details><summary>Q1：某应用内嵌了大模型帮你润色邮件，全程不调用任何工具。它是 Agent 吗？为什么？</summary>
+      <div class="ans">不是。它只生成文本，没有工具调用，也没有"行动→观察反馈→再决策"的循环，属于普通聊天/增强型 LLM。</div></details>
+    <details><summary>Q2：一个自动化脚本固定执行"抓取→清洗→存库→邮件通知"，中间某步调用了 LLM 做摘要。它是 Agent 吗？</summary>
+      <div class="ans">更接近"工作流"而非 Agent：控制路径由代码预先定义，LLM 只是其中一步的处理组件；Agent 的标志是模型自己决定下一步做什么、做多少步。</div></details>
+    <details><summary>Q3：为什么"环境反馈"被认为是 Agent 循环里最关键的一环？缺了会怎样？</summary>
+      <div class="ans">反馈（工具结果/报错）是模型判断进展与纠错的唯一事实依据；缺了它，模型只能凭空继续，小错误会一路累积成完全离谱的结果。</div></details>
   </section>
 
-  <!-- 8 资料来源 -->
+  <!-- 6 资料来源 -->
   <section class="card">
-    <h2>资料来源（可核查）</h2>
+    <h2>可核查的资料来源</h2>
+    <p style="font-size:13.5px;color:var(--muted)">以下 4 个链接均已于生成当日（2026-09-07）联网打开核实内容真实有效。</p>
     <ol class="src">
-      <li>Anthropic 官方工程指南《Building Effective Agents》——Workflow vs Agent 的定义、"Agent＝LLM＋工具＋环境反馈循环"。<br><span class="url">https://www.anthropic.com/research/building-effective-agents</span><span class="badge b-ok">已联网核实</span></li>
-      <li>Lilian Weng（翁荔）《LLM Powered Autonomous Agents》（Lil'Log，2023-06）——Agent＝LLM controller＋规划＋记忆＋工具 的经典综述。<br><span class="url">https://lilianweng.github.io/posts/2023-06-23-agent/</span><span class="badge b-ok">已联网核实</span></li>
-      <li>OpenAI 学习轨道《Learn how to build agents》——定义（instructions / guardrails / tools）与实现组件。<br><span class="url">https://developers.openai.com/tracks/building-agents/</span><span class="badge b-ok">已联网核实</span></li>
-      <li>ReAct 论文（arXiv:2210.03629）——"推理＋行动"交替的经典 Agent 模式。<br><span class="url">https://arxiv.org/abs/2210.03629</span><span class="badge b-warn">请点开复核</span></li>
-      <li>Anthropic《Our framework for developing safe and trustworthy agents》——自主性与"人在回路/护栏"边界。<br><span class="url">https://www.anthropic.com/news/our-framework-for-developing-safe-and-trustworthy-agents</span><span class="badge b-ok">已联网核实</span></li>
+      <li>Anthropic《Building Effective Agents》——Workflow vs Agent 的权威区分，"Agent＝LLM 在循环中根据反馈使用工具"，以及何时该用/不该用 Agent。<br><span class="url">https://www.anthropic.com/research/building-effective-agents</span><span class="badge b-ok">已联网核实</span></li>
+      <li>IBM Think《What Are AI Agents?》——定义（利用工具自主设计工作流执行任务）、工作三阶段、ReAct/ReWOO 推理范式与风险清单。<br><span class="url">https://www.ibm.com/think/topics/ai-agents</span><span class="badge b-ok">已联网核实</span></li>
+      <li>Microsoft《AI Agents for Beginners》（GitHub，18 节课）——系统的入门课程：设计模式、工具使用、多 Agent、上下文工程与安全，含中文翻译。<br><span class="url">https://github.com/microsoft/ai-agents-for-beginners</span><span class="badge b-ok">已联网核实</span></li>
+      <li>LangChain《LangGraph Overview》官方文档——Agent 的工程化编排：确定性步骤与自主步骤混合、持久化、human-in-the-loop。<br><span class="url">https://docs.langchain.com/oss/python/langgraph/overview</span><span class="badge b-ok">已联网核实</span></li>
     </ol>
-    <p style="font-size:13.5px;color:var(--muted)">引用用途：来源①②③⑤支撑"定义与组成"；来源④支撑"规划中的 ReAct 模式"；应用案例来自①⑤中的客户实践。</p>
   </section>
 
-  <!-- 生成与人工核查记录 -->
+  <!-- 7 自检记录 -->
   <section class="card">
-    <h2>生成与人工核查记录</h2>
+    <h2>生成与自检记录</h2>
     <div class="check">
-      <b>生成方式</b>：本文由仓库内项目级 Skill <code>concept-explainer</code>（.workbuddy/skills/concept-explainer/SKILL.md）按"澄清概念→自问自答→收集素材→生成→交叉核对→自检→登记"七步流程生成，生成时间 2026-09-07。<br><br>
-      <b>已完成的核查</b>：① 关键术语与两份权威来源的定义交叉对照无冲突；② 来源 ①②③⑤ 已联网确认页面存在；③ 来源④（arXiv）未打开验证，已标注待复核；④ 自测题答案逐题核对。<br><br>
-      <b>建议人工做的事</b>：本人通读一遍，把"个人解释"与"类比"改成自己顺口的说法；点开来源④确认链接有效；如发现表述错误请直接修改本文件。
+      <b>生成方式</b>：由仓库内项目级 Skill <code>concept-learner</code>（.workbuddy/skills/concept-learner/SKILL.md）生成，生成时间 2026-09-07；本文件覆盖了同日早些时候由 concept-explainer 生成的旧版。<br><br>
+      <b>自检结果</b>：① HTML 结构完整、可直接在浏览器打开；② 六个区块内容齐全、无空泛套话；③ 4 个来源链接均联网核实有效，未收录无法核实的候选来源（如 OpenAI 文档被防护拦截、维基百科抓取失败，已按 skill 规则弃用）；④ 解释为个人化表述与类比，非照搬定义；⑤ 辨析共 4 条，无事实性错误。<br><br>
+      <b>建议人工复核</b>：通读"个人解释"改成自己顺口的话；点开 4 个来源确认；发现错误直接改本文件。
     </div>
   </section>
 
-  <footer>S10711 个人学习仓库 · learning-materials/agent.html · 由 concept-explainer Skill 生成 · 资料以官方来源为准，如有出入欢迎指正</footer>
+  <footer>S10711 个人学习仓库 · learning-materials/agent.html · 由 concept-learner Skill 生成 · 资料以官方来源为准</footer>
 </div>
 </body>
 </html>
